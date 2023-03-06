@@ -36,4 +36,49 @@ module.exports = {
       });
     });
   },
+  updateInstructors: (data, id) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `UPDATE instructors SET ? WHERE InstructorID = ?`,
+        [data, id],
+        (err, result) => {
+          if (!err) {
+            resolve(data, id);
+          } else {
+            reject(err);
+          }
+        }
+      );
+    });
+  },
+  updateInstructorStatus: (data, id) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `UPDATE instructors SET Status = ? WHERE InstructorID = ?`,
+        [data.Status, id],
+        (err, result) => {
+          if (!err) {
+            resolve(data, id);
+          } else {
+            reject(err);
+          }
+        }
+      );
+    });
+  },
+  deleteInstructor: (id) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `DELETE FROM instructors WHERE InstructorID = ?`,
+        id,
+        (err, result) => {
+          if (!err) {
+            resolve(result);
+          } else {
+            reject(err);
+          }
+        }
+      );
+    });
+  },
 };
