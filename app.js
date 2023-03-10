@@ -6,12 +6,13 @@ const bodyParser = require("body-parser");
 const booksRoute = require("./src/routes/books");
 const membersRoute = require("./src/routes/members");
 const instructorsRoute = require("./src/routes/instructors");
+const schedulesRoute = require("./src/routes/schedules");
 const loger = require("morgan");
 const authRoute = require("./src/routes/auth");
 const app = express();
 
 const PORT = process.env.PORT || 8000;
-const routes = [booksRoute, membersRoute, instructorsRoute];
+const routes = [booksRoute, membersRoute, instructorsRoute, schedulesRoute];
 app.listen(PORT, () => {
   console.log("Server running on PORT " + PORT);
 });

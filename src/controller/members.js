@@ -22,6 +22,25 @@ module.exports = {
         })
       );
   },
+  getMemberById: (req, res) => {
+    const id = req.body.MemberID;
+    membersModel
+      .getMemberById(id)
+      .then((result) =>
+        res.json({
+          status: 200,
+          message: "Data retrieved successfully",
+          data: result,
+        })
+      )
+      .catch((err) =>
+        res.json({
+          status: 400,
+          message: "Data failed to be retrieved",
+          data: err,
+        })
+      );
+  },
   addNewMember: (req, res) => {
     membersModel
       .getLastMemberId()
