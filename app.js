@@ -9,10 +9,17 @@ const instructorsRoute = require("./src/routes/instructors");
 const schedulesRoute = require("./src/routes/schedules");
 const loger = require("morgan");
 const authRoute = require("./src/routes/auth");
+const authsRoute = require("./src/routes/auths");
 const app = express();
 
 const PORT = process.env.PORT || 8000;
-const routes = [booksRoute, membersRoute, instructorsRoute, schedulesRoute];
+const routes = [
+  booksRoute,
+  membersRoute,
+  instructorsRoute,
+  schedulesRoute,
+  authsRoute,
+];
 app.listen(PORT, () => {
   console.log("Server running on PORT " + PORT);
 });

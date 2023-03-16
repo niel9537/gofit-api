@@ -3,14 +3,17 @@ const db = require("./../config/db");
 module.exports = {
   getAllInstructors: () => {
     return new Promise((resolve, reject) => {
-      db.query(`SELECT * FROM instructors`, (err, result) => {
-        if (!err) {
-          resolve(result);
-        } else {
-          console.log(err);
-          reject(err);
+      db.query(
+        `SELECT * FROM instructors WHERE Status != "Nonaktif"`,
+        (err, result) => {
+          if (!err) {
+            resolve(result);
+          } else {
+            console.log(err);
+            reject(err);
+          }
         }
-      });
+      );
     });
   },
   getInstructorsByID: (id) => {
@@ -71,6 +74,21 @@ module.exports = {
       db.query(
         `DELETE FROM instructors WHERE InstructorID = ?`,
         id,
+        (err, result) => {
+          if (!err) {
+            resolve(result);
+          } else {
+            reject(err);
+          }
+        }
+      );
+    });
+  },
+  getInstructorById: (id) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `SELECT * FROM instructors WHERE InstructorID=?`,
+        [id],
         (err, result) => {
           if (!err) {
             resolve(result);

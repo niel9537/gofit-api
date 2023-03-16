@@ -53,6 +53,7 @@ module.exports = {
       Name: req.body.Name,
       PhoneNumber: req.body.PhoneNumber,
       Address: req.body.Address,
+      Birthdate: req.body.Birthdate,
     };
     const id = req.body.MemberID;
 
@@ -131,10 +132,11 @@ module.exports = {
       ClassCode: "",
       GymCode: "",
       Username: req.body.Username,
-      Password: req.body.Password,
+      Password: req.body.Birthdate,
       Name: req.body.Name,
       PhoneNumber: req.body.PhoneNumber,
       Address: req.body.Address,
+      Birthdate: req.body.Birthdate,
       StartDate: moment().format("YYYY-MM-DD"),
       EndDate: moment().add(1, "years").format("YYYY-MM-DD"),
       Status: "Pending",

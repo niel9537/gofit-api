@@ -24,11 +24,12 @@ module.exports = {
   addNewInstructor: (req, res) => {
     const data = {
       Username: req.body.Username,
-      Password: req.body.Password,
+      Password: req.body.Birthdate,
       Name: req.body.Name,
       PhoneNumber: req.body.PhoneNumber,
       Email: req.body.Email,
       Address: req.body.Address,
+      Birthdate: req.body.Birthdate,
       Status: "Aktif",
     };
     console.log("Ins" + data);
@@ -57,6 +58,7 @@ module.exports = {
       PhoneNumber: req.body.PhoneNumber,
       Email: req.body.Email,
       Address: req.body.Address,
+      Birthdate: req.body.Birthdate,
     };
     const id = req.body.InstructorID;
 
@@ -116,6 +118,25 @@ module.exports = {
         res.json({
           status: 400,
           message: "Delete instructor failed",
+          data: err,
+        })
+      );
+  },
+  getInstructorById: (req, res) => {
+    const id = req.body.InstructorID;
+    instructorsModel
+      .getInstructorById(id)
+      .then((result) =>
+        res.json({
+          status: 200,
+          message: "Data retrieved successfully",
+          data: result,
+        })
+      )
+      .catch((err) =>
+        res.json({
+          status: 400,
+          message: "Data failed to be retrieved",
           data: err,
         })
       );

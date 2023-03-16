@@ -3,13 +3,16 @@ const db = require("../config/db");
 module.exports = {
   getAllMembers: () => {
     return new Promise((resolve, reject) => {
-      db.query(`SELECT * FROM members`, (err, result) => {
-        if (!err) {
-          resolve(result);
-        } else {
-          reject(err);
+      db.query(
+        `SELECT * FROM members WHERE status="Aktif" OR status="Pending"`,
+        (err, result) => {
+          if (!err) {
+            resolve(result);
+          } else {
+            reject(err);
+          }
         }
-      });
+      );
     });
   },
   getLastMemberId: () => {
