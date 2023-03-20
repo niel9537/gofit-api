@@ -25,10 +25,9 @@ module.exports = {
     const data = {
       Name: req.body.Name,
       InstructorID: req.body.InstructorID,
-      StartDate: req.body.StartDate,
-      EndDate: req.body.EndDate,
-      StartSession: req.body.StartSession,
-      EndSession: req.body.EndSession,
+      ClassCode: req.body.ClassCode,
+      Date: req.body.Date,
+      Session: req.body.Session,
       Category: req.body.Category,
       Status: "Aktif",
     };
@@ -53,13 +52,12 @@ module.exports = {
     const data = {
       Name: req.body.Name,
       InstructorID: req.body.InstructorID,
-      StartDate: req.body.StartDate,
-      EndDate: req.body.EndDate,
-      StartSession: req.body.StartSession,
-      EndSession: req.body.EndSession,
+      ClassCode: req.body.ClassCode,
+      Date: req.body.Date,
+      Session: req.body.Session,
       Category: req.body.Category,
     };
-    const id = req.body.ClassCode;
+    const id = req.body.SechuduleID;
 
     scheduleModel
       .updateSchedule(data, id)

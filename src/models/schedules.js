@@ -3,14 +3,40 @@ const db = require("../config/db");
 module.exports = {
   getAllSchedules: () => {
     return new Promise((resolve, reject) => {
-      db.query(`SELECT * FROM schedules`, (err, result) => {
-        if (!err) {
-          resolve(result);
-        } else {
-          console.log(err);
-          reject(err);
+      db.query(
+        `SELECT s.ScheduleID,i.InstructorID, i.Name as InstructorName, c.ClassCode, c.Name as ClassName, s.Name, s.Date, s.Session,s.Category, s.Status
+      FROM schedules s
+      LEFT JOIN instructors i ON s.InstructorID = i.InstructorID
+      LEFT JOIN classes c ON s.ClassCode = c.ClassCode
+      WHERE s.Status NOT IN ('NONAKTIF')`,
+        (err, result) => {
+          if (!err) {
+            resolve(result);
+          } else {
+            console.log(err);
+            reject(err);
+          }
         }
-      });
+      );
+    });
+  },
+  checkSchedule: (id, code, session, date) => {
+    return new Promise((resolve, reject) => {
+      db.query(
+        `SELECT IFNULL(COUNT(*),0) AS EXIST FROM schedules
+        WHERE InstructorID IN ('?')
+        AND ClassCode IN ('?')
+        AND StartSession IN ('?')
+        AND StartDate IN ('?')`,
+        [id, code, session, date],
+        (err, result) => {
+          if (!err) {
+            resolve(result);
+          } else {
+            reject(err);
+          }
+        }
+      );
     });
   },
   getScheduleByID: (id) => {
