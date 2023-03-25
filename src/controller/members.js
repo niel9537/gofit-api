@@ -48,7 +48,7 @@ module.exports = {
   },
   updateMember: (req, res) => {
     const data = {
-      Username: req.body.Username,
+      Username: req.body.MemberID,
       Password: req.body.Password,
       Name: req.body.Name,
       PhoneNumber: req.body.PhoneNumber,
@@ -131,7 +131,7 @@ module.exports = {
       MemberID: memberID,
       ClassCode: "",
       GymCode: "",
-      Username: req.body.Username,
+      Username: memberID,
       Password: req.body.Birthdate,
       Name: req.body.Name,
       PhoneNumber: req.body.PhoneNumber,

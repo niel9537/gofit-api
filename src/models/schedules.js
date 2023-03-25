@@ -4,7 +4,7 @@ module.exports = {
   getAllSchedules: () => {
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT s.ScheduleID,i.InstructorID, i.Name as InstructorName, c.ClassCode, c.Name as ClassName, s.Name, s.Date, s.Session,s.Category, s.Status
+        `SELECT s.ScheduleID,i.InstructorID, i.Name as InstructorName, c.ClassCode, c.Name as ClassName, s.Date, s.Session,s.Category, s.Status
       FROM schedules s
       LEFT JOIN instructors i ON s.InstructorID = i.InstructorID
       LEFT JOIN classes c ON s.ClassCode = c.ClassCode
@@ -20,15 +20,28 @@ module.exports = {
       );
     });
   },
-  checkSchedule: (id, code, session, date) => {
+  getClass: () => {
     return new Promise((resolve, reject) => {
+      db.query(`SELECT * FROM classes`, (err, result) => {
+        if (!err) {
+          resolve(result);
+        } else {
+          console.log(err);
+          reject(err);
+        }
+      });
+    });
+  },
+  checkSchedule: (id, code, session, session2, date) => {
+    return new Promise((resolve, reject) => {
+      const end = 09.0;
       db.query(
         `SELECT IFNULL(COUNT(*),0) AS EXIST FROM schedules
-        WHERE InstructorID IN ('?')
-        AND ClassCode IN ('?')
-        AND StartSession IN ('?')
-        AND StartDate IN ('?')`,
-        [id, code, session, date],
+        WHERE InstructorID IN (?)
+        AND ClassCode IN (?)
+        AND END BETWEEN (?) AND (?)
+        AND Date IN (?)`,
+        [id, code, session, session2, date],
         (err, result) => {
           if (!err) {
             resolve(result);
@@ -42,7 +55,11 @@ module.exports = {
   getScheduleByID: (id) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `SELECT * FROM schedules WHERE ClassCode=?`,
+        `SELECT s.ScheduleID,i.InstructorID, i.Name as InstructorName, c.ClassCode, c.Name as ClassName, s.Date, s.Session,s.Category, s.Status
+        FROM schedules s
+        LEFT JOIN instructors i ON s.InstructorID = i.InstructorID
+        LEFT JOIN classes c ON s.ClassCode = c.ClassCode
+        WHERE s.Status NOT IN ('NONAKTIF') AND s.ScheduleID = ?`,
         [id],
         (err, result) => {
           if (!err) {
@@ -65,7 +82,7 @@ module.exports = {
   updateSchedule: (data, id) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `UPDATE schedules SET ? WHERE ClassCode = ?`,
+        `UPDATE schedules SET ? WHERE ScheduleID = ?`,
         [data, id],
         (err, result) => {
           if (!err) {
@@ -80,7 +97,7 @@ module.exports = {
   updateScheduleStatus: (data, id) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `UPDATE schedules SET Status = ? WHERE ClassCode = ?`,
+        `UPDATE schedules SET Status = ? WHERE ScheduleID = ?`,
         [data, id],
         (err, result) => {
           if (!err) {
@@ -95,7 +112,7 @@ module.exports = {
   deleteSchedule: (id) => {
     return new Promise((resolve, reject) => {
       db.query(
-        `DELETE FROM schedules WHERE ClassCode = ?`,
+        `DELETE FROM schedules WHERE ScheduleID = ?`,
         id,
         (err, result) => {
           if (!err) {

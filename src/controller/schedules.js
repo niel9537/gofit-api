@@ -21,14 +21,61 @@ module.exports = {
         });
       });
   },
+  checkSchedule: (req, res) => {
+    var timestring1 = req.body.Session;
+    var startdate = moment(timestring1, "HH:mm").add(1, "hour");
+    const id = req.body.InstructorID;
+    const code = req.body.ClassCode;
+    const session = req.body.Session;
+    const session2 = startdate.format("HH:mm");
+    const date = req.body.Date;
+    console.log(session, session2);
+    scheduleModel
+      .checkSchedule(id, code, session, session2, date)
+      .then((result) => {
+        res.json({
+          status: 200,
+          message: "Data retrieved successfully",
+          data: result,
+        });
+      })
+      .catch((err) => {
+        res.json({
+          status: 400,
+          message: "Data failed to be retrieved",
+          data: err,
+        });
+      });
+  },
+  getClass: (req, res) => {
+    scheduleModel
+      .getClass()
+      .then((result) => {
+        res.json({
+          status: 200,
+          message: "Data retrieved successfully",
+          data: result,
+        });
+      })
+      .catch((err) => {
+        res.json({
+          status: 400,
+          message: "Data failed to be retrieved",
+          data: err,
+        });
+      });
+  },
   addNewSchedule: (req, res) => {
+    var timestring1 = req.body.Session;
+    var startdate = moment(timestring1, "HH:mm").add(1, "hour");
+    var session2 = startdate.format("HH:mm");
     const data = {
-      Name: req.body.Name,
       InstructorID: req.body.InstructorID,
       ClassCode: req.body.ClassCode,
       Date: req.body.Date,
       Session: req.body.Session,
       Category: req.body.Category,
+      End: session2,
       Status: "Aktif",
     };
     scheduleModel
@@ -49,16 +96,19 @@ module.exports = {
       );
   },
   updateSchedule: (req, res) => {
+    var timestring1 = req.body.Session;
+    var startdate = moment(timestring1, "HH:mm").add(1, "hour");
+    var session2 = startdate.format("HH:mm");
     const data = {
-      Name: req.body.Name,
       InstructorID: req.body.InstructorID,
       ClassCode: req.body.ClassCode,
       Date: req.body.Date,
       Session: req.body.Session,
       Category: req.body.Category,
+      End: session2,
     };
-    const id = req.body.SechuduleID;
-
+    const id = req.body.ScheduleID;
+    console.log(data);
     scheduleModel
       .updateSchedule(data, id)
       .then((result) =>
@@ -78,7 +128,7 @@ module.exports = {
   },
   updateScheduleStatus: (req, res) => {
     const data = req.body.Status;
-    const id = req.body.ClassCode;
+    const id = req.body.ScheduleID;
     console.log(data);
     scheduleModel
       .updateScheduleStatus(data, id)
@@ -98,7 +148,7 @@ module.exports = {
       );
   },
   deleteSchedule: (req, res) => {
-    const id = req.params.ClassCode;
+    const id = req.params.ScheduleID;
 
     scheduleModel
       .deleteSchedule(id)
@@ -113,6 +163,25 @@ module.exports = {
         res.json({
           status: 400,
           message: "Delete schedule failed",
+          data: err,
+        })
+      );
+  },
+  getScheduleById: (req, res) => {
+    const id = req.body.ScheduleID;
+    scheduleModel
+      .getScheduleByID(id)
+      .then((result) =>
+        res.json({
+          status: 200,
+          message: "Data retrieved successfully",
+          data: result,
+        })
+      )
+      .catch((err) =>
+        res.json({
+          status: 400,
+          message: "Data failed to be retrieved",
           data: err,
         })
       );
