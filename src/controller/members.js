@@ -139,7 +139,7 @@ module.exports = {
       Birthdate: req.body.Birthdate,
       StartDate: moment().format("YYYY-MM-DD"),
       EndDate: moment().add(1, "years").format("YYYY-MM-DD"),
-      Status: "Pending",
+      Status: "Aktif",
     };
 
     membersModel

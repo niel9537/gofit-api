@@ -35,13 +35,13 @@ module.exports = {
   checkSchedule: (id, code, session, session2, date) => {
     return new Promise((resolve, reject) => {
       const end = 09.0;
+
       db.query(
         `SELECT IFNULL(COUNT(*),0) AS EXIST FROM schedules
         WHERE InstructorID IN (?)
-        AND ClassCode IN (?)
         AND END BETWEEN (?) AND (?)
         AND Date IN (?)`,
-        [id, code, session, session2, date],
+        [id, session, session2, date],
         (err, result) => {
           if (!err) {
             resolve(result);
